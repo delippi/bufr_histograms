@@ -1,5 +1,5 @@
 Created 6/02/2021
-Updated 3/10/2022
+Updated 3/31/2023
 
 This set of scripts is made to inventory bufr observations and create a histogram and a CDF of the data latency.
 As there are a lot of observations to processes (~2e8 per 6hrly dump), the process is broken down into three
@@ -13,25 +13,31 @@ Perhaps there is a better way to coding this? In step 4, the numpy files created
 plots.
 
 FILE DESCRIPTIONS:
-bufr.txt:         A text list of bufr file types. Use a "#" to skip individual types. Used by run.ksh.
-config.ksh:       The configuration file. Right now only contains the date1&2 for all three steps.
-dateutils.py:     Needed for date manipulation
-hist/:            This is a directory which stores the *.sh files and log files 
-incdate.sh:       similar to ndate; date manipulation
-latency/:         This is a directory which stores the numpy (*.npy) files
-latency1.py:      1st step, read each bufr file and output $bufr.$date.npy file to be read by latency2
-latency2.py:      2nd step  which reads the $bufr.$date.npy then outputs $typ.$date.npy where typ=sat,air,ins,gps
-latency3.py:      3rd step (only after latency2) which reads the $typ.$date.npy files then plots
-latency4.py:      4th step (can be run after 1st step) which reads $bufr.$date.npy then plots separately.
-run.latency1.ksh: used to run 1st step python script
-run.latency2.ksh: used to run 2nd step python script
-run.latency3.ksh: used to run 3rd step python script
-run.latency4.ksh: used to run 4rd step python script
+
+src/
+    dateutils.py:     Needed for date manipulation
+    latency_1.py:      1st step, read each bufr file and output $bufr.$date.npy file to be read by latency2
+    latency_2.py:      2nd step  which reads the $bufr.$date.npy then outputs $typ.$date.npy where typ=sat,air,ins,gps
+    latency_3.py:      3rd step (only after latency2) which reads the $typ.$date.npy files then plots
+    latency_4.py:      4th step (can be run after 1st step) which reads $bufr.$date.npy then plots separately.
+    receipt_1.py:      1st step, read each bufr file and output $bufr.$date.npy file to be read by latency2
+    receipt_2.py:      2nd step  which reads the $bufr.$date.npy then outputs $typ.$date.npy where typ=sat,air,ins,gps
+
+scripts/
+    incdate.sh:       similar to ndate; date manipulation
+    bufr.txt:         A text list of bufr file types. Use a "#" to skip individual types. Used by run.ksh.
+    config.ksh:       The configuration file. Right now only contains the date1&2 for all three steps.
+    run.latency_1.ksh: used to run 1st step python script
+    run.latency_2.ksh: used to run 2nd step python script
+    run.latency_3.ksh: used to run 3rd step python script
+    run.latency_4.ksh: used to run 4rd step python script
+    run.receipt_1.ksh: used to run 1st step python script
+    run.receipt_2.ksh: used to run 2nd step python script
 
 TO RUN:
-0.)   vi config.ksh #this is where you set the dates for the 3 steps.
-0.5.) vi bufr.txt   #comment out using "#" the obs types that are not needed.
-1.)   ksh run.latency1.ksh
-2.)   ksh run.latency2.ksh
-3.)   ksh run.latency3.ksh
-4.)   ksh run.latency4.ksh
+0.)   edit config.ksh #this is where you set the dates for the 3 steps.
+0.5.) edit bufr.txt   #comment out using "#" the obs types that are not needed.
+1.)   ksh run.latency_1.ksh
+2.)   ksh run.latency_2.ksh
+3.)   ksh run.latency_3.ksh
+4.)   ksh run.latency_4.ksh
